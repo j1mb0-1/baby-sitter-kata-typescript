@@ -88,4 +88,12 @@ export class BabySitter {
       throw new Error("Cannot stop baby sitting unless job is accepted");
     }
   }
+
+  putKidsToBed(bedTime: Date) {
+    if (this._timeSheet) {
+      this._timeSheet.bedTime = bedTime;
+    } else {
+      throw new Error("Cannot got to bed unless job is accepted");
+    }
+  }
 }

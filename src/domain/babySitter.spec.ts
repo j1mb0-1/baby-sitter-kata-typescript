@@ -217,6 +217,25 @@ describe("baby sitter", () => {
     }).toThrowError();
   });
 
+  it("should put kids bed", () => {
+    const babySitter: BabySitter = createValidBabySitterWithJob();
+
+    const bedTime: Date = new Date("2022-03-28T01:00:00.000Z");
+    babySitter.putKidsToBed(bedTime);
+
+    expect(babySitter.timeSheet!.bedTime).toEqual(bedTime);
+  });
+
+  it("should not put kids to bed when a job has not been accepted", () => {
+    const babySitter: BabySitter = createValidBabySitter();
+
+    const bedTime: Date = new Date("2022-03-28T01:00:00.000Z");
+
+    expect(() => {
+      babySitter.putKidsToBed(bedTime);
+    }).toThrowError();
+  });
+
   const createValidBabySitter = (): BabySitter => {
     const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
     const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
