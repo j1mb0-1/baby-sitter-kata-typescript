@@ -1,9 +1,9 @@
 export class BabySittingJob {
-  readonly startTime: Date;
-  readonly endTime: Date;
-  readonly startTimeToBedTimeRate: number;
-  readonly bedTimeToMidnightRate: number;
-  readonly midnightToEndTimeRate: number;
+  private _startTime: Date;
+  private _endTime: Date;
+  private _startTimeToBedTimeRate: number;
+  private _bedTimeToMidnightRate: number;
+  private _midnightToEndTimeRate: number;
 
   constructor(
     startTime: Date,
@@ -12,18 +12,38 @@ export class BabySittingJob {
     bedTimeToMidnightRate: number,
     midnightToEndTimeRate: number
   ) {
-    this.startTime = startTime;
+    this._startTime = startTime;
     if (endTime <= startTime)
       throw new Error("Job end time cannot be before start time");
-    this.endTime = endTime;
+    this._endTime = endTime;
     if (startTimeToBedTimeRate < 0)
       throw new Error("Job start time to bedtime rate cannot be negative");
-    this.startTimeToBedTimeRate = startTimeToBedTimeRate;
+    this._startTimeToBedTimeRate = startTimeToBedTimeRate;
     if (bedTimeToMidnightRate < 0)
       throw new Error("Job bedtime to midnight rate cannot be negative");
-    this.bedTimeToMidnightRate = bedTimeToMidnightRate;
+    this._bedTimeToMidnightRate = bedTimeToMidnightRate;
     if (midnightToEndTimeRate < 0)
       throw new Error("Job midnight to end time rate cannot be negative");
-    this.midnightToEndTimeRate = midnightToEndTimeRate;
+    this._midnightToEndTimeRate = midnightToEndTimeRate;
+  }
+
+  get startTime(): Date {
+    return this._startTime;
+  }
+
+  get endTime(): Date {
+    return this._endTime;
+  }
+
+  get startTimeToBedTimeRate(): number {
+    return this._startTimeToBedTimeRate;
+  }
+
+  get bedTimeToMidnightRate(): number {
+    return this._bedTimeToMidnightRate;
+  }
+
+  get midnightToEndTimeRate(): number {
+    return this._midnightToEndTimeRate;
   }
 }
