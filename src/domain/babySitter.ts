@@ -80,4 +80,12 @@ export class BabySitter {
       throw new Error("Cannot start baby sitting unless job is accepted");
     }
   }
+
+  stopBabySitting(endedTime: Date) {
+    if (this._timeSheet) {
+      this._timeSheet.endedTime = endedTime;
+    } else {
+      throw new Error("Cannot stop baby sitting unless job is accepted");
+    }
+  }
 }

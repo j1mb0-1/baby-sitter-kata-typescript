@@ -198,6 +198,25 @@ describe("baby sitter", () => {
     }).toThrowError();
   });
 
+  it("should stop baby sitting", () => {
+    const babySitter: BabySitter = createValidBabySitterWithJob();
+
+    const endedTime: Date = new Date("2022-03-28T08:00:00.000Z");
+    babySitter.stopBabySitting(endedTime);
+
+    expect(babySitter.timeSheet!.endedTime).toEqual(endedTime);
+  });
+
+  it("should not stop baby sitting when a job has not been accepted", () => {
+    const babySitter: BabySitter = createValidBabySitter();
+
+    const endedTime: Date = new Date("2022-03-28T08:00:00.000Z");
+
+    expect(() => {
+      babySitter.stopBabySitting(endedTime);
+    }).toThrowError();
+  });
+
   const createValidBabySitter = (): BabySitter => {
     const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
     const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
