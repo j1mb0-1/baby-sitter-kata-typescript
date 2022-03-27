@@ -27,6 +27,14 @@ export class BabySitter {
     return this._endDayEndTimeAsDurationMs;
   }
 
+  get timeSheet() {
+    return this._timeSheet;
+  }
+
+  get job() {
+    return this._timeSheet?.job;
+  }
+
   acceptJob(timeSheet: BabySittingTimeSheet) {
     const now: Date = new Date();
     const { job } = timeSheet;
@@ -65,11 +73,11 @@ export class BabySitter {
     this._timeSheet = timeSheet;
   }
 
-  get timeSheet() {
-    return this._timeSheet;
-  }
-
-  get job() {
-    return this._timeSheet?.job;
+  startBabySitting(startedTime: Date) {
+    if (this._timeSheet) {
+      this._timeSheet.startedTime = startedTime;
+    } else {
+      throw new Error("Cannot start baby sitting unless job is accepted");
+    }
   }
 }

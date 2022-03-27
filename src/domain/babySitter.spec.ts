@@ -178,4 +178,49 @@ describe("baby sitter", () => {
       babySitter.acceptJob(timeSheet);
     }).toThrowError();
   });
+
+  it("should start baby sitting", () => {
+    const babySitter: BabySitter = createValidBabySitterWithJob();
+
+    const startedTime: Date = new Date("2022-03-27T21:00:00.000Z");
+    babySitter.startBabySitting(startedTime);
+
+    expect(babySitter.timeSheet!.startedTime).toBe(startedTime);
+  });
+
+  it("should not start baby sitting when a job has not been accepted", () => {
+    const babySitter: BabySitter = createValidBabySitter();
+
+    const startedTime: Date = new Date("2022-03-27T21:00:00.000Z");
+
+    expect(() => {
+      babySitter.startBabySitting(startedTime);
+    }).toThrowError();
+  });
+
+  const createValidBabySitter = (): BabySitter => {
+    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
+    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const babySitter: BabySitter = new BabySitter(
+      preferredStartDayStartDurationMs,
+      preferredEndDayEndDurationMs
+    );
+    return babySitter;
+  };
+
+  const createValidBabySitterWithJob = (): BabySitter => {
+    const babySitter: BabySitter = createValidBabySitter();
+    const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
+    const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
+    const job: BabySittingJob = new BabySittingJob(
+      startTime,
+      endTime,
+      12,
+      8,
+      16
+    );
+    const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
+    babySitter.acceptJob(timeSheet);
+    return babySitter;
+  };
 });
