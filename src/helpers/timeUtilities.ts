@@ -6,7 +6,7 @@ export const HOURS_IN_DAY = 24;
 export const MS_IN_HOUR = MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MS_IN_SECONDS;
 export const MS_IS_MIN = SECONDS_IN_MINUTE * MS_IN_SECONDS;
 
-export const getStartOfDay = (date: Date): Date => {
+export const getStartOfDayUTC = (date: Date): Date => {
   let newDate: Date = new Date(date.getTime());
   newDate.setUTCHours(0, 0, 0, 0);
   return newDate;
@@ -25,4 +25,9 @@ export const roundToHour = (date: Date, round: "floor" | "ceil"): Date => {
     newDate = new Date(Math.ceil(date.getTime() / MS_IN_HOUR) * MS_IN_HOUR);
   }
   return newDate;
+};
+
+export const getTimezoneOffsetMs = (): number => {
+  const timezoneOffsetMs: number = new Date().getTimezoneOffset() * MS_IS_MIN;
+  return timezoneOffsetMs;
 };

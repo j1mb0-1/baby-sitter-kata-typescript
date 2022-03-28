@@ -4,49 +4,36 @@ import { BabySittingJob } from "./babySittingJob";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
 
 describe("baby sitter", () => {
-  const mockNow: Date = new Date("2022-03-27T12:00:00.000Z");
-
-  beforeAll(() => {
-    jest.useFakeTimers("modern");
-    jest.setSystemTime(mockNow);
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
   it("should create baby sitter", () => {
-    const preferredStartDayStartDurationMs: number = 17 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 4 * MS_IN_HOUR;
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
 
-    expect(babySitter.startDayStartTimeAsDurationMs).toBe(
-      preferredStartDayStartDurationMs
-    );
-    expect(babySitter.endDayEndTimeAsDurationMs).toBe(
-      preferredEndDayEndDurationMs
-    );
+    expect(babySitter.startTimeLimitOffsetMs).toBe(startTimeLimitOffsetMs);
+    expect(babySitter.endTimeLimitOffsetMs).toBe(endTimeLimitOffsetMs);
   });
 
   it("should accept a job", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
+      localMidnightTime,
       12,
       8,
       16
     );
     const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
 
     babySitter.acceptJob(timeSheet);
@@ -57,42 +44,21 @@ describe("baby sitter", () => {
   it("should not accept a job when it is over 24 hours", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T22:00:00.000Z");
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
+      localMidnightTime,
       12,
       8,
       16
     );
     const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
-    );
-
-    expect(() => {
-      babySitter.acceptJob(timeSheet);
-    }).toThrowError();
-  });
-
-  it("should not accept a job when its start date has passed", () => {
-    const startTime: Date = new Date("2022-03-27T11:00:00.000Z");
-    const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
-    const job: BabySittingJob = new BabySittingJob(
-      startTime,
-      endTime,
-      12,
-      8,
-      16
-    );
-    const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
-    const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
 
     expect(() => {
@@ -101,28 +67,30 @@ describe("baby sitter", () => {
   });
 
   it("should not accept a job when it starts before its start time", () => {
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const startOfToday: Date = new Date("2022-03-27T00:00:00.000Z");
     const startOfTomorrow: Date = new Date(
       startOfToday.getTime() + 24 * MS_IN_HOUR
     );
 
     const preferredStartTimeToday: Date = new Date(
-      startOfToday.getTime() + preferredStartDayStartDurationMs
+      startOfToday.getTime() + startTimeLimitOffsetMs
     );
     const jobStartTimeBeforePreferred: Date = new Date(
       preferredStartTimeToday.getTime() - 3 * MS_IN_HOUR
     );
 
     const preferredEndTimeTomorrow: Date = new Date(
-      startOfTomorrow.getTime() + preferredEndDayEndDurationMs
+      startOfTomorrow.getTime() + endTimeLimitOffsetMs
     );
     const jobEndTime: Date = new Date(preferredEndTimeTomorrow.getTime());
 
     const job: BabySittingJob = new BabySittingJob(
       jobStartTimeBeforePreferred,
       jobEndTime,
+      localMidnightTime,
       12,
       8,
       16
@@ -130,8 +98,8 @@ describe("baby sitter", () => {
 
     const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
 
     expect(() => {
@@ -140,20 +108,21 @@ describe("baby sitter", () => {
   });
 
   it("should not accept a job when it ends after its end time", () => {
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const startOfToday: Date = new Date("2022-03-27T00:00:00.000Z");
     const startOfTomorrow: Date = new Date(
       startOfToday.getTime() + 24 * MS_IN_HOUR
     );
 
     const preferredStartTimeToday: Date = new Date(
-      startOfToday.getTime() + preferredStartDayStartDurationMs
+      startOfToday.getTime() + startTimeLimitOffsetMs
     );
     const jobStartTime: Date = new Date(preferredStartTimeToday.getTime());
 
     const preferredEndTimeTomorrow: Date = new Date(
-      startOfTomorrow.getTime() + preferredEndDayEndDurationMs
+      startOfTomorrow.getTime() + endTimeLimitOffsetMs
     );
     const jobEndTimeAfterPreferred: Date = new Date(
       preferredEndTimeTomorrow.getTime() + 2 * MS_IN_HOUR
@@ -162,6 +131,7 @@ describe("baby sitter", () => {
     const job: BabySittingJob = new BabySittingJob(
       jobStartTime,
       jobEndTimeAfterPreferred,
+      localMidnightTime,
       12,
       8,
       16
@@ -169,31 +139,8 @@ describe("baby sitter", () => {
 
     const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
-    );
-
-    expect(() => {
-      babySitter.acceptJob(timeSheet);
-    }).toThrowError();
-  });
-
-  it("should not accept a job when it is not overnight", () => {
-    const startTime: Date = new Date("2022-03-27T12:00:00.000Z");
-    const endTime: Date = new Date("2022-03-27T13:00:00.000Z");
-    const startDayStartTimeAsDurationMs: number = 0;
-    const endDayEndTimeAsDurationMs: number = 8 * MS_IN_HOUR;
-    const job: BabySittingJob = new BabySittingJob(
-      startTime,
-      endTime,
-      12,
-      8,
-      16
-    );
-    const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
-    const babySitter: BabySitter = new BabySitter(
-      startDayStartTimeAsDurationMs,
-      endDayEndTimeAsDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
 
     expect(() => {
@@ -259,11 +206,11 @@ describe("baby sitter", () => {
   });
 
   const createValidBabySitter = (): BabySitter => {
-    const preferredStartDayStartDurationMs: number = 21 * MS_IN_HOUR;
-    const preferredEndDayEndDurationMs: number = 8 * MS_IN_HOUR;
+    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
+    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
     const babySitter: BabySitter = new BabySitter(
-      preferredStartDayStartDurationMs,
-      preferredEndDayEndDurationMs
+      startTimeLimitOffsetMs,
+      endTimeLimitOffsetMs
     );
     return babySitter;
   };
@@ -272,9 +219,11 @@ describe("baby sitter", () => {
     const babySitter: BabySitter = createValidBabySitter();
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
+      localMidnightTime,
       12,
       8,
       16

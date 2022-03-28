@@ -49,8 +49,9 @@ describe("baby sitter charge calculator", () => {
    * Midnight to end rate is $16.00
    *
    * Started at 5:00 PM EST
-   * Ended at 4:00 AM EST
    * Bedtime at 10:00 PM EST
+   * Midnight is 12:00 AM EST the next day
+   * Ended at 4:00 AM EST the next day
    *
    * Hours between started time and bedtime: 5
    * Hours between bed and midnight: 2
@@ -79,8 +80,9 @@ describe("baby sitter charge calculator", () => {
    * Midnight to end rate is $16.00
    *
    * Started at 5:15 PM EST
-   * Ended at 4:00 AM EST
    * Bedtime at 10:00 PM EST
+   * Midnight is 12:00 AM EST the next day
+   * Ended at 4:00 AM EST the next day
    *
    * Hours between started time and bedtime: 4
    * Hours between bed and midnight: 2
@@ -111,8 +113,9 @@ describe("baby sitter charge calculator", () => {
    * Midnight to end is rate $16.00
    *
    * Started at 5:00 PM EST
-   * Ended at 1:30 AM EST
    * Bedtime at 10:00 PM EST
+   * Midnight is 12:00 AM EST the next day
+   * Ended at 1:30 AM EST the next day
    *
    * Hours between started time and bedtime: 5
    * Hours between bed and midnight: 2
@@ -143,8 +146,9 @@ describe("baby sitter charge calculator", () => {
    * Midnight to end rate is $16.00
    *
    * Started at 5:00 PM EST
-   * Ended at 4:00 AM EST
    * Bedtime at 10:15 PM EST
+   * Midnight is 12:00 AM EST the next day
+   * Ended at 4:00 AM EST the next day
    *
    * Hours between started time and bedtime: 6
    * Hours between bed and midnight: 1
@@ -175,8 +179,9 @@ describe("baby sitter charge calculator", () => {
    * Midnight to end is $16.00
    *
    * Started at 5:00 PM EST
-   * Ended at 4:00 AM EST
    * Bedtime at 10:15 PM EST
+   * Midnight is 12:00 AM EST the next day
+   * Ended at 4:00 AM EST the next day
    *
    * Hours between started time and bedtime: 5
    * Hours between bed and midnight = 2
@@ -198,41 +203,12 @@ describe("baby sitter charge calculator", () => {
     expect(charge).toEqual(164);
   });
 
-  /**
-   * End time is before midnight
-   *
-   * Job start scheduled at 5:00 PM EST
-   * Job end scheduled exactly at 11:30 PM EST
-   * Start to bedtime rate is $12.00
-   * Bedtime to midnight rate is $8.00
-   * Midnight to end rate is $16.00
-   *
-   * Started at 5:00 PM EST
-   * Ended at 4:00 AM EST
-   * Bedtime at 10:00 PM EST
-   *
-   * Hours between started time and bedtime: 5
-   * Hours between bed and midnight: 2
-   * Hours between midnight and end: 4
-   *
-   * Expected Charge: $140.00
-   */
-  it("should calculate the charge under perfect conditions", () => {
-    const timeSheet: BabySittingTimeSheet = createPopulatedTimeSheet();
-
-    const babySittingChargeCalculator: BabySittingChargeCalculator =
-      new BabySittingChargeCalculator();
-
-    const charge = babySittingChargeCalculator.calculate(timeSheet);
-
-    expect(charge).toBe(140);
-  });
-
   const createPopulatedTimeSheet = (
     props?:
       | {
           startTime?: Date | undefined;
           endTime?: Date | undefined;
+          localMidnightTime?: Date | undefined;
           startedTime?: Date | undefined;
           endedTime?: Date | undefined;
           bedTime?: Date | undefined;
@@ -245,6 +221,7 @@ describe("baby sitter charge calculator", () => {
     const {
       startTime,
       endTime,
+      localMidnightTime,
       startTimeToBedTimeRate,
       bedTimeToMidnightRate,
       midnightToEndTimeRate,
@@ -255,6 +232,7 @@ describe("baby sitter charge calculator", () => {
     const job: BabySittingJob = new BabySittingJob(
       startTime || new Date("2022-03-27T21:00:00.000Z"),
       endTime || new Date("2022-03-28T08:00:00.000Z"),
+      localMidnightTime || new Date("2022-03-28T04:00:00.000Z"),
       startTimeToBedTimeRate || 12,
       bedTimeToMidnightRate || 8,
       midnightToEndTimeRate || 16

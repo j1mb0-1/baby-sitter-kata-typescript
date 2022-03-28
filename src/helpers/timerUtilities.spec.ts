@@ -1,8 +1,9 @@
 import {
-  getStartOfDay,
+  getStartOfDayUTC,
   addDurationMsToDate,
   MS_IN_HOUR,
   roundToHour,
+  getTimezoneOffsetMs,
 } from "./timeUtilities";
 
 describe("time utilities", () => {
@@ -11,7 +12,7 @@ describe("time utilities", () => {
       const date: Date = new Date("2022-03-27T15:03:20.489Z");
       const expectedDate: Date = new Date("2022-03-27T00:00:00.000Z");
 
-      const actualDate: Date = getStartOfDay(date);
+      const actualDate: Date = getStartOfDayUTC(date);
 
       expect(actualDate).toEqual(expectedDate);
     });
@@ -20,7 +21,7 @@ describe("time utilities", () => {
       const date: Date = new Date("2022-03-27T00:00:00.000Z");
       const expectedDate: Date = new Date("2022-03-27T00:00:00.000Z");
 
-      const actualDate: Date = getStartOfDay(date);
+      const actualDate: Date = getStartOfDayUTC(date);
 
       expect(actualDate).toEqual(expectedDate);
     });
@@ -29,7 +30,7 @@ describe("time utilities", () => {
       const date: Date = new Date("2022-03-27T23:59:59.999Z");
       const expectedDate: Date = new Date("2022-03-27T00:00:00.000Z");
 
-      const actualDate: Date = getStartOfDay(date);
+      const actualDate: Date = getStartOfDayUTC(date);
 
       expect(actualDate).toEqual(expectedDate);
     });
@@ -100,6 +101,14 @@ describe("time utilities", () => {
       const actualDate: Date = roundToHour(date, "ceil");
 
       expect(actualDate).toEqual(expectedDate);
+    });
+  });
+
+  describe("getTimezoneOffsetMs", () => {
+    it("should return the current timezone offset in ms", () => {
+      const expected = new Date().getTimezoneOffset() * 60 * 1000;
+      const actual = getTimezoneOffsetMs();
+      expect(actual).toBe(expected);
     });
   });
 });

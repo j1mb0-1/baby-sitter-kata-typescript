@@ -1,31 +1,26 @@
 import {
   addDurationMsToDate,
-  getStartOfDay,
+  getStartOfDayUTC,
   MS_IN_HOUR,
-  MS_IS_MIN,
 } from "../helpers/timeUtilities";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
 
 export class BabySitter {
-  private _startDayStartTimeAsDurationMs: number;
-  private _endDayEndTimeAsDurationMs: number;
-
+  private _startTimeLimitOffsetMs: number;
+  private _endTimeLimitOffsetMs: number;
   private _timeSheet: BabySittingTimeSheet | undefined;
 
-  constructor(
-    startDayStartTimeAsDurationMs: number,
-    endDayEndTimeAsDurationMs: number
-  ) {
-    this._startDayStartTimeAsDurationMs = startDayStartTimeAsDurationMs;
-    this._endDayEndTimeAsDurationMs = endDayEndTimeAsDurationMs;
+  constructor(startTimeLimitOffsetMs: number, endTimeLimitOffsetMs: number) {
+    this._startTimeLimitOffsetMs = startTimeLimitOffsetMs;
+    this._endTimeLimitOffsetMs = endTimeLimitOffsetMs;
   }
 
-  get startDayStartTimeAsDurationMs(): number {
-    return this._startDayStartTimeAsDurationMs;
+  get startTimeLimitOffsetMs(): number {
+    return this._startTimeLimitOffsetMs;
   }
 
-  get endDayEndTimeAsDurationMs(): number {
-    return this._endDayEndTimeAsDurationMs;
+  get endTimeLimitOffsetMs(): number {
+    return this._endTimeLimitOffsetMs;
   }
 
   get timeSheet() {
@@ -33,20 +28,16 @@ export class BabySitter {
   }
 
   acceptJob(timeSheet: BabySittingTimeSheet) {
-    const now: Date = new Date();
     const { job } = timeSheet;
-    if (now > job.startTime) {
-      throw new Error("Cannot accept a job that has already started");
-    }
 
     if (job.endTime.getTime() - job.startTime.getTime() > 24 * MS_IN_HOUR) {
       throw new Error("Cannot accept a job that is longer than 24 hours");
     }
 
-    const jobStartDay = getStartOfDay(job.startTime);
+    const jobStartDay = getStartOfDayUTC(job.startTime);
     const preferredStartTimeOnJobStartDay: Date = addDurationMsToDate(
       jobStartDay,
-      this._startDayStartTimeAsDurationMs
+      this._startTimeLimitOffsetMs
     );
     if (job.startTime < preferredStartTimeOnJobStartDay) {
       throw new Error(
@@ -54,28 +45,17 @@ export class BabySitter {
       );
     }
 
-    const jobEndDay = getStartOfDay(job.endTime);
+    const jobEndDay = getStartOfDayUTC(job.endTime);
     if (jobEndDay > jobStartDay) {
       const preferredEndTimeOnJobEndDay: Date = addDurationMsToDate(
         jobEndDay,
-        this._endDayEndTimeAsDurationMs
+        this._endTimeLimitOffsetMs
       );
       if (job.endTime > preferredEndTimeOnJobEndDay) {
         throw new Error(
           "Cannot accept a job that ends after preferred start time"
         );
       }
-    }
-
-    const midnightUTC: Date = getStartOfDay(job.endTime);
-    const timezoneOffsetMin: number =
-      midnightUTC.getTimezoneOffset() * MS_IS_MIN;
-    const localMidnight: Date = new Date(
-      midnightUTC.getTime() + timezoneOffsetMin
-    );
-
-    if (localMidnight <= job.startTime || localMidnight >= job.endTime) {
-      throw new Error("Cannot accept a job that that is not overnight");
     }
 
     this._timeSheet = timeSheet;

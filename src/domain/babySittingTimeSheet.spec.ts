@@ -5,9 +5,12 @@ describe("baby sitting time sheet", () => {
   it("should create empty time sheet", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
+      localMidnightTime,
       12,
       8,
       16
@@ -111,9 +114,12 @@ describe("baby sitting time sheet", () => {
   const createValidatedTimeSheet = (): BabySittingTimeSheet => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
+      localMidnightTime,
       12,
       8,
       16
