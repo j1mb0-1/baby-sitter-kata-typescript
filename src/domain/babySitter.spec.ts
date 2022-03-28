@@ -1,5 +1,5 @@
 import { MS_IN_HOUR } from "../helpers/timeUtilities";
-import { BabySitter } from "./babySitter";
+import { AcceptJobError, BabySitter, BabySittingError } from "./babySitter";
 import { BabySittingJob } from "./babySittingJob";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
 
@@ -79,7 +79,7 @@ describe("baby sitter", () => {
 
     expect(() => {
       babySitter.acceptJob(timeSheet);
-    }).toThrowError();
+    }).toThrow(AcceptJobError);
   });
 
   it("should not accept a job when it ends after its end time", () => {
@@ -120,7 +120,7 @@ describe("baby sitter", () => {
 
     expect(() => {
       babySitter.acceptJob(timeSheet);
-    }).toThrowError();
+    }).toThrow(AcceptJobError);
   });
 
   it("should start baby sitting", () => {
@@ -139,7 +139,7 @@ describe("baby sitter", () => {
 
     expect(() => {
       babySitter.startBabySitting(startedTime);
-    }).toThrowError();
+    }).toThrow(BabySittingError);
   });
 
   it("should stop baby sitting", () => {
@@ -158,7 +158,7 @@ describe("baby sitter", () => {
 
     expect(() => {
       babySitter.stopBabySitting(endedTime);
-    }).toThrowError();
+    }).toThrow(BabySittingError);
   });
 
   it("should put kids bed", () => {
@@ -177,7 +177,7 @@ describe("baby sitter", () => {
 
     expect(() => {
       babySitter.putKidsToBed(bedTime);
-    }).toThrowError();
+    }).toThrow(BabySittingError);
   });
 
   const createValidBabySitter = (): BabySitter => {

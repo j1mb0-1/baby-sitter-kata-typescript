@@ -1,6 +1,9 @@
 import { BabySittingJob } from "./babySittingJob";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
-import { BabySittingChargeCalculator } from "./babySittingChargeCalculator";
+import {
+  BabySittingChargeCalculator,
+  CalculateConstraintError,
+} from "./babySittingChargeCalculator";
 
 describe("baby sitter charge calculator", () => {
   it("should not calculate when timesheet has no started time", () => {
@@ -12,7 +15,7 @@ describe("baby sitter charge calculator", () => {
 
     expect(() => {
       babySittingChargeCalculator.calculate(timeSheet);
-    }).toThrowError();
+    }).toThrow(CalculateConstraintError);
   });
 
   it("should not calculate when timesheet has no ended time", () => {
@@ -24,7 +27,7 @@ describe("baby sitter charge calculator", () => {
 
     expect(() => {
       babySittingChargeCalculator.calculate(timeSheet);
-    }).toThrowError();
+    }).toThrow(CalculateConstraintError);
   });
 
   it("should not calculate when timesheet has no bed time", () => {
@@ -36,7 +39,7 @@ describe("baby sitter charge calculator", () => {
 
     expect(() => {
       babySittingChargeCalculator.calculate(timeSheet);
-    }).toThrowError();
+    }).toThrow(CalculateConstraintError);
   });
 
   /**

@@ -1,16 +1,11 @@
-import {
-  getStartOfDayUTC,
-  MS_IN_HOUR,
-  MS_IS_MIN,
-  roundToHour,
-} from "../helpers/timeUtilities";
+import { MS_IN_HOUR, roundToHour } from "../helpers/timeUtilities";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
+import { NamedError } from "../app/namedError";
 
 export class BabySittingChargeCalculator {
   calculate(timeSheet: BabySittingTimeSheet) {
     const { startedTime, endedTime, bedTime, job } = timeSheet;
     const {
-      endTime,
       localMidnightTime,
       startTimeToBedTimeRate,
       bedTimeToMidnightRate,
@@ -18,15 +13,21 @@ export class BabySittingChargeCalculator {
     } = job;
 
     if (!startedTime) {
-      throw new Error("Cannot calulate a timesheet with no started time");
+      throw new CalculateConstraintError(
+        "Cannot calulate a timesheet without a started time"
+      );
     }
 
     if (!endedTime) {
-      throw new Error("Cannot calulate a timesheet with no ended time");
+      throw new CalculateConstraintError(
+        "Cannot calulate a timesheet without an ended time"
+      );
     }
 
     if (!bedTime) {
-      throw new Error("Cannot calulate a timesheet with no bedtime");
+      throw new CalculateConstraintError(
+        "Cannot calulate a timesheet without a bedtime"
+      );
     }
 
     const chargedStartedTime = roundToHour(startedTime, "ceil");
@@ -49,5 +50,13 @@ export class BabySittingChargeCalculator {
     totalCharge += midnightToEndTimeDurationHours * midnightToEndTimeRate;
 
     return totalCharge;
+  }
+}
+
+abstract class BabySittingChargeCalculatorError extends NamedError {}
+
+export class CalculateConstraintError extends BabySittingChargeCalculatorError {
+  constructor(message: string | undefined) {
+    super(message, "CalculateConstraintError");
   }
 }

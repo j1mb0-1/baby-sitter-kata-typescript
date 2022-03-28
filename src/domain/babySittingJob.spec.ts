@@ -1,4 +1,4 @@
-import { BabySittingJob } from "./babySittingJob";
+import { BabySittingJob, JobConstraintError } from "./babySittingJob";
 
 describe("baby sitting job", () => {
   it("should create new job", () => {
@@ -43,7 +43,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when when the end time is greater than 24 hours after start time", () => {
@@ -63,7 +63,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when start time is after local midnight time", () => {
@@ -83,7 +83,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when end time is before local midnight time", () => {
@@ -103,7 +103,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when end time is before start time", () => {
@@ -123,7 +123,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when start time to bed time rate is negative", () => {
@@ -143,7 +143,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when bedtime to midnight rate is negative", () => {
@@ -163,7 +163,7 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 
   it("should not create new job when midnight to end time rate is negative", () => {
@@ -183,6 +183,6 @@ describe("baby sitting job", () => {
         bedTimeToMidnightRate,
         midnightToEndTimeRate
       );
-    }).toThrowError();
+    }).toThrow(JobConstraintError);
   });
 });

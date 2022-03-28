@@ -1,4 +1,5 @@
 import { MS_IN_HOUR } from "../helpers/timeUtilities";
+import { NamedError } from "../app/namedError";
 
 export class BabySittingJob {
   private _startTime: Date;
@@ -17,25 +18,46 @@ export class BabySittingJob {
     midnightToEndTimeRate: number
   ) {
     if (endTime <= startTime) {
-      throw new Error("Job end time cannot be before start time");
+      throw new JobConstraintError(
+        `Job end time cannot be before start time. 
+        Start time: ${startTime} End time: ${endTime}`
+      );
     }
     if (endTime.getTime() - startTime.getTime() > 24 * MS_IN_HOUR) {
-      throw new Error("Job cannot last longer than 24 hours");
+      throw new JobConstraintError(
+        `Job cannot last longer than 24 hours. 
+        Start time: ${startTime} End time: ${endTime}`
+      );
     }
     if (startTime >= localMidnightTime) {
-      throw new Error("Job cannot start after midnight");
+      throw new JobConstraintError(
+        `Job cannot start after midnight. 
+        Start time: ${startTime} End time: ${endTime}`
+      );
     }
     if (endTime <= localMidnightTime) {
-      throw new Error("Job cannot end before midnight");
+      throw new JobConstraintError(
+        `Job cannot end before midnight. 
+        Start time: ${startTime} End time: ${endTime}`
+      );
     }
     if (startTimeToBedTimeRate < 0) {
-      throw new Error("Job start time to bedtime rate cannot be negative");
+      throw new JobConstraintError(
+        `Job cannot have a negative start time to bedtime rate. 
+        Rate: ${startTimeToBedTimeRate}`
+      );
     }
     if (bedTimeToMidnightRate < 0) {
-      throw new Error("Job bedtime to midnight rate cannot be negative");
+      throw new JobConstraintError(
+        `Job cannot have a negative bedtime time to midnight rate. 
+        Rate: ${bedTimeToMidnightRate}`
+      );
     }
     if (midnightToEndTimeRate < 0) {
-      throw new Error("Job midnight to end time rate cannot be negative");
+      throw new JobConstraintError(
+        `Job cannot have a negative midnight time to end time rate. 
+        Rate: ${midnightToEndTimeRate}`
+      );
     }
 
     this._startTime = startTime;
@@ -68,5 +90,13 @@ export class BabySittingJob {
 
   get midnightToEndTimeRate(): number {
     return this._midnightToEndTimeRate;
+  }
+}
+
+abstract class BabySittingJobError extends NamedError {}
+
+export class JobConstraintError extends BabySittingJobError {
+  constructor(message: string | undefined) {
+    super(message, "JobConstraintError");
   }
 }

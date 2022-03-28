@@ -1,4 +1,5 @@
 import { BabySittingJob } from "./babySittingJob";
+import { NamedError } from "../app/namedError";
 
 export class BabySittingTimeSheet {
   private _job: BabySittingJob;
@@ -20,12 +21,12 @@ export class BabySittingTimeSheet {
 
   set startedTime(value: Date | undefined) {
     if (value && value < this._job.startTime) {
-      throw Error(
+      throw new TimeSheetConstraintError(
         "Cannot record a started time that is before a job's start time"
       );
     }
     if (value && value > this._job.endTime) {
-      throw Error(
+      throw new TimeSheetConstraintError(
         "Cannot record a started time that is after a job's end time"
       );
     }
@@ -38,12 +39,14 @@ export class BabySittingTimeSheet {
 
   set endedTime(value: Date | undefined) {
     if (value && value < this._job.startTime) {
-      throw Error(
+      throw new TimeSheetConstraintError(
         "Cannot record an ended time that is before a job's start time"
       );
     }
     if (value && value > this._job.endTime) {
-      throw Error("Cannot record an ended time that is after a job's end time");
+      throw new TimeSheetConstraintError(
+        "Cannot record an ended time that is after a job's end time"
+      );
     }
     this._endedTime = value;
   }
@@ -54,11 +57,23 @@ export class BabySittingTimeSheet {
 
   set bedTime(value: Date | undefined) {
     if (value && value < this._job.startTime) {
-      throw Error("Cannot record a bed time that is before a job's start time");
+      throw new TimeSheetConstraintError(
+        "Cannot record a bed time that is before a job's start time"
+      );
     }
     if (value && value > this._job.endTime) {
-      throw Error("Cannot record an bed time that is after a job's end time");
+      throw new TimeSheetConstraintError(
+        "Cannot record an bed time that is after a job's end time"
+      );
     }
     this._bedTime = value;
+  }
+}
+
+abstract class BabySittingTimeSheetError extends NamedError {}
+
+export class TimeSheetConstraintError extends BabySittingTimeSheetError {
+  constructor(message: string | undefined) {
+    super(message, "TimeSheetConstraintError");
   }
 }

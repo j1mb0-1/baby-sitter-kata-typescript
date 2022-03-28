@@ -1,7 +1,7 @@
+import { NamedError } from "../app/namedError";
 import {
   addDurationMsToDate,
   getStartOfDayUTC,
-  MS_IN_HOUR,
 } from "../helpers/timeUtilities";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
 
@@ -36,8 +36,9 @@ export class BabySitter {
       this._startTimeLimitOffsetMs
     );
     if (job.startTime < preferredStartTimeOnJobStartDay) {
-      throw new Error(
-        "Cannot accept a job that begins before preferred start time"
+      throw new AcceptJobError(
+        `The job starts before the Baby Sitter's start time. 
+        Job start time: ${job.startTime} Baby Sitter start time ${preferredStartTimeOnJobStartDay}`
       );
     }
 
@@ -48,8 +49,9 @@ export class BabySitter {
         this._endTimeLimitOffsetMs
       );
       if (job.endTime > preferredEndTimeOnJobEndDay) {
-        throw new Error(
-          "Cannot accept a job that ends after preferred start time"
+        throw new AcceptJobError(
+          `The job ends after the Baby Sitter's end time. 
+          Job end time: ${job.endTime}, Baby Sitter end time ${preferredEndTimeOnJobEndDay}`
         );
       }
     }
@@ -61,7 +63,9 @@ export class BabySitter {
     if (this._timeSheet) {
       this._timeSheet.startedTime = startedTime;
     } else {
-      throw new Error("Cannot start baby sitting unless job is accepted");
+      throw new BabySittingError(
+        "The Baby Sitter cannot start until a job has been accepted"
+      );
     }
   }
 
@@ -69,7 +73,9 @@ export class BabySitter {
     if (this._timeSheet) {
       this._timeSheet.endedTime = endedTime;
     } else {
-      throw new Error("Cannot stop baby sitting unless job is accepted");
+      throw new BabySittingError(
+        "The Baby Sitter cannot end a job unless a job has been accepted"
+      );
     }
   }
 
@@ -77,7 +83,23 @@ export class BabySitter {
     if (this._timeSheet) {
       this._timeSheet.bedTime = bedTime;
     } else {
-      throw new Error("Cannot got to bed unless job is accepted");
+      throw new BabySittingError(
+        "The Baby Sitter cannot put kids to bed unless a job has been accepted"
+      );
     }
+  }
+}
+
+abstract class BabySitterError extends NamedError {}
+
+export class AcceptJobError extends BabySitterError {
+  constructor(message: string | undefined) {
+    super(message, "AcceptJobError");
+  }
+}
+
+export class BabySittingError extends BabySitterError {
+  constructor(message: string | undefined) {
+    super(message, "BabySittingError");
   }
 }

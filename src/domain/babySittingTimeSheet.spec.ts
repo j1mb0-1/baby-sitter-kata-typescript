@@ -1,5 +1,8 @@
 import { BabySittingJob } from "./babySittingJob";
-import { BabySittingTimeSheet } from "./babySittingTimeSheet";
+import {
+  BabySittingTimeSheet,
+  TimeSheetConstraintError,
+} from "./babySittingTimeSheet";
 
 describe("baby sitting time sheet", () => {
   it("should create empty time sheet", () => {
@@ -40,7 +43,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.startedTime = startedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   it("should not set started time when it is after it's jobs end time", () => {
@@ -50,7 +53,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.startedTime = startedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   it("should set ended time", () => {
@@ -69,7 +72,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.endedTime = endedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   it("should not set ended time when it is before it's jobs start time", () => {
@@ -79,7 +82,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.endedTime = endedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   it("should set bed time", () => {
@@ -98,7 +101,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.bedTime = bedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   it("should not set a bed time when it is after it's jobs end time", () => {
@@ -108,7 +111,7 @@ describe("baby sitting time sheet", () => {
 
     expect(() => {
       timeSheet.bedTime = bedTime;
-    }).toThrowError();
+    }).toThrow(TimeSheetConstraintError);
   });
 
   const createValidatedTimeSheet = (): BabySittingTimeSheet => {
