@@ -46,6 +46,26 @@ describe("baby sitting job", () => {
     }).toThrowError();
   });
 
+  it("should not create new job when when the end time is greater than 24 hours after start time", () => {
+    const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
+    const endTime: Date = new Date("2022-03-28T22:00:00.000Z");
+    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const startTimeToBedTimeRate: number = 12;
+    const bedTimeToMidnightRate: number = 8;
+    const midnightToEndTimeRate: number = 16;
+
+    expect(() => {
+      new BabySittingJob(
+        startTime,
+        endTime,
+        localMidnightTime,
+        startTimeToBedTimeRate,
+        bedTimeToMidnightRate,
+        midnightToEndTimeRate
+      );
+    }).toThrowError();
+  });
+
   it("should not create new job when start time is after local midnight time", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-27T22:00:00.000Z");

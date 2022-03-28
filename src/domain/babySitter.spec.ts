@@ -41,31 +41,6 @@ describe("baby sitter", () => {
     expect(babySitter.timeSheet).toBe(timeSheet);
   });
 
-  it("should not accept a job when it is over 24 hours", () => {
-    const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
-    const endTime: Date = new Date("2022-03-28T22:00:00.000Z");
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
-    const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
-    const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
-    const job: BabySittingJob = new BabySittingJob(
-      startTime,
-      endTime,
-      localMidnightTime,
-      12,
-      8,
-      16
-    );
-    const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
-    const babySitter: BabySitter = new BabySitter(
-      startTimeLimitOffsetMs,
-      endTimeLimitOffsetMs
-    );
-
-    expect(() => {
-      babySitter.acceptJob(timeSheet);
-    }).toThrowError();
-  });
-
   it("should not accept a job when it starts before its start time", () => {
     const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
     const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;

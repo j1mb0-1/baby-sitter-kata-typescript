@@ -30,10 +30,6 @@ export class BabySitter {
   acceptJob(timeSheet: BabySittingTimeSheet) {
     const { job } = timeSheet;
 
-    if (job.endTime.getTime() - job.startTime.getTime() > 24 * MS_IN_HOUR) {
-      throw new Error("Cannot accept a job that is longer than 24 hours");
-    }
-
     const jobStartDay = getStartOfDayUTC(job.startTime);
     const preferredStartTimeOnJobStartDay: Date = addDurationMsToDate(
       jobStartDay,
