@@ -52,7 +52,6 @@ describe("baby sitter", () => {
     babySitter.acceptJob(timeSheet);
 
     expect(babySitter.timeSheet).toBe(timeSheet);
-    expect(babySitter.job).toBe(job);
   });
 
   it("should not accept a job when it is over 24 hours", () => {

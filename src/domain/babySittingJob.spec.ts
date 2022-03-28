@@ -81,8 +81,8 @@ describe("baby sitting job", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
     const startTimeToBedTimeRate: number = 12;
-    const bedTimeToMidnightRate: number = -1;
-    const midnightToEndTimeRate: number = 16;
+    const bedTimeToMidnightRate: number = 8;
+    const midnightToEndTimeRate: number = -1;
 
     expect(() => {
       new BabySittingJob(

@@ -32,10 +32,6 @@ export class BabySitter {
     return this._timeSheet;
   }
 
-  get job() {
-    return this._timeSheet?.job;
-  }
-
   acceptJob(timeSheet: BabySittingTimeSheet) {
     const now: Date = new Date();
     const { job } = timeSheet;
