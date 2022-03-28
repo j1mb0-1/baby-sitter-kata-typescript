@@ -4,7 +4,8 @@
   "description": "Baby Sitter Kata Exercise",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "build": "tsc",
     "start": "tsc && node dist/index.js"
   },
