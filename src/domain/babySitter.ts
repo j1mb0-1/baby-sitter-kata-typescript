@@ -2,6 +2,7 @@ import {
   addDurationMsToDate,
   getStartOfDay,
   MS_IN_HOUR,
+  MS_IS_MIN,
 } from "../helpers/timeUtilities";
 import { BabySittingTimeSheet } from "./babySittingTimeSheet";
 
@@ -68,6 +69,17 @@ export class BabySitter {
           "Cannot accept a job that ends after preferred start time"
         );
       }
+    }
+
+    const midnightUTC: Date = getStartOfDay(job.endTime);
+    const timezoneOffsetMin: number =
+      midnightUTC.getTimezoneOffset() * MS_IS_MIN;
+    const localMidnight: Date = new Date(
+      midnightUTC.getTime() + timezoneOffsetMin
+    );
+
+    if (localMidnight <= job.startTime || localMidnight >= job.endTime) {
+      throw new Error("Cannot accept a job that that is not overnight");
     }
 
     this._timeSheet = timeSheet;

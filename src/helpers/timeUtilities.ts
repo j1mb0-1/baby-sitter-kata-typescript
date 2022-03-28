@@ -4,6 +4,7 @@ export const MINUTES_IN_HOUR = 60;
 export const HOURS_IN_DAY = 24;
 
 export const MS_IN_HOUR = MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MS_IN_SECONDS;
+export const MS_IS_MIN = SECONDS_IN_MINUTE * MS_IN_SECONDS;
 
 export const getStartOfDay = (date: Date): Date => {
   let newDate: Date = new Date(date.getTime());

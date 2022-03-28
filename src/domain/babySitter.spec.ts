@@ -179,6 +179,29 @@ describe("baby sitter", () => {
     }).toThrowError();
   });
 
+  it("should not accept a job when it is not overnight", () => {
+    const startTime: Date = new Date("2022-03-27T12:00:00.000Z");
+    const endTime: Date = new Date("2022-03-27T13:00:00.000Z");
+    const startDayStartTimeAsDurationMs: number = 0;
+    const endDayEndTimeAsDurationMs: number = 8 * MS_IN_HOUR;
+    const job: BabySittingJob = new BabySittingJob(
+      startTime,
+      endTime,
+      12,
+      8,
+      16
+    );
+    const timeSheet: BabySittingTimeSheet = new BabySittingTimeSheet(job);
+    const babySitter: BabySitter = new BabySitter(
+      startDayStartTimeAsDurationMs,
+      endDayEndTimeAsDurationMs
+    );
+
+    expect(() => {
+      babySitter.acceptJob(timeSheet);
+    }).toThrowError();
+  });
+
   it("should start baby sitting", () => {
     const babySitter: BabySitter = createValidBabySitterWithJob();
 
