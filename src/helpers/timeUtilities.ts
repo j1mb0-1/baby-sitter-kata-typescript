@@ -16,3 +16,13 @@ export const addDurationMsToDate = (date: Date, durationMs: number): Date => {
   const newDate: Date = new Date(date.getTime() + durationMs);
   return newDate;
 };
+
+export const roundToHour = (date: Date, round: "floor" | "ceil"): Date => {
+  let newDate: Date;
+  if (round === "floor") {
+    newDate = new Date(Math.floor(date.getTime() / MS_IN_HOUR) * MS_IN_HOUR);
+  } else {
+    newDate = new Date(Math.ceil(date.getTime() / MS_IN_HOUR) * MS_IN_HOUR);
+  }
+  return newDate;
+};
