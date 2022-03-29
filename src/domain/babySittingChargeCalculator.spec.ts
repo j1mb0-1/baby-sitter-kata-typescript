@@ -211,7 +211,7 @@ describe("baby sitter charge calculator", () => {
       | {
           startTime?: Date | undefined;
           endTime?: Date | undefined;
-          localMidnightTime?: Date | undefined;
+          midnightTime?: Date | undefined;
           startedTime?: Date | undefined;
           endedTime?: Date | undefined;
           bedTime?: Date | undefined;
@@ -224,7 +224,7 @@ describe("baby sitter charge calculator", () => {
     const {
       startTime,
       endTime,
-      localMidnightTime,
+      midnightTime,
       startTimeToBedTimeRate,
       bedTimeToMidnightRate,
       midnightToEndTimeRate,
@@ -235,7 +235,7 @@ describe("baby sitter charge calculator", () => {
     const job: BabySittingJob = new BabySittingJob(
       startTime || new Date("2022-03-27T21:00:00.000Z"),
       endTime || new Date("2022-03-28T08:00:00.000Z"),
-      localMidnightTime || new Date("2022-03-28T04:00:00.000Z"),
+      midnightTime || new Date("2022-03-28T04:00:00.000Z"),
       startTimeToBedTimeRate || 12,
       bedTimeToMidnightRate || 8,
       midnightToEndTimeRate || 16

@@ -19,13 +19,13 @@ describe("baby sitter", () => {
   it("should accept a job", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
     const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16
@@ -44,7 +44,7 @@ describe("baby sitter", () => {
   it("should not accept a job when it starts before its start time", () => {
     const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
     const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const startOfToday: Date = new Date("2022-03-27T00:00:00.000Z");
     const startOfTomorrow: Date = new Date(
       startOfToday.getTime() + 24 * MS_IN_HOUR
@@ -65,7 +65,7 @@ describe("baby sitter", () => {
     const job: BabySittingJob = new BabySittingJob(
       jobStartTimeBeforePreferred,
       jobEndTime,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16
@@ -85,7 +85,7 @@ describe("baby sitter", () => {
   it("should not accept a job when it ends after its end time", () => {
     const startTimeLimitOffsetMs: number = 21 * MS_IN_HOUR;
     const endTimeLimitOffsetMs: number = 8 * MS_IN_HOUR;
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const startOfToday: Date = new Date("2022-03-27T00:00:00.000Z");
     const startOfTomorrow: Date = new Date(
       startOfToday.getTime() + 24 * MS_IN_HOUR
@@ -106,7 +106,7 @@ describe("baby sitter", () => {
     const job: BabySittingJob = new BabySittingJob(
       jobStartTime,
       jobEndTimeAfterPreferred,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16
@@ -194,11 +194,11 @@ describe("baby sitter", () => {
     const babySitter: BabySitter = createValidBabySitter();
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16

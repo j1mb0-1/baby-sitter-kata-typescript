@@ -8,12 +8,12 @@ describe("baby sitting time sheet", () => {
   it("should create empty time sheet", () => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
 
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16
@@ -114,15 +114,25 @@ describe("baby sitting time sheet", () => {
     }).toThrow(TimeSheetConstraintError);
   });
 
+  it("should not set a bed time when it is after it's jobs midnight", () => {
+    const timeSheet: BabySittingTimeSheet = createValidatedTimeSheet();
+
+    const bedTime: Date = new Date("2022-03-28T05:00:00.000Z");
+
+    expect(() => {
+      timeSheet.bedTime = bedTime;
+    }).toThrow(TimeSheetConstraintError);
+  });
+
   const createValidatedTimeSheet = (): BabySittingTimeSheet => {
     const startTime: Date = new Date("2022-03-27T21:00:00.000Z");
     const endTime: Date = new Date("2022-03-28T08:00:00.000Z");
-    const localMidnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
+    const midnightTime: Date = new Date("2022-03-28T04:00:00.000Z");
 
     const job: BabySittingJob = new BabySittingJob(
       startTime,
       endTime,
-      localMidnightTime,
+      midnightTime,
       12,
       8,
       16

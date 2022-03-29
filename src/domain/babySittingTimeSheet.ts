@@ -63,7 +63,12 @@ export class BabySittingTimeSheet {
     }
     if (value && value > this._job.endTime) {
       throw new TimeSheetConstraintError(
-        "Cannot record an bed time that is after a job's end time"
+        "Cannot record a bed time that is after a job's end time"
+      );
+    }
+    if (value && value > this._job.midnightTime) {
+      throw new TimeSheetConstraintError(
+        "Cannot record a bed time that is after a job's midnight"
       );
     }
     this._bedTime = value;

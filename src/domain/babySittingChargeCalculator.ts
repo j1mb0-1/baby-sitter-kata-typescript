@@ -6,7 +6,7 @@ export class BabySittingChargeCalculator {
   calculate(timeSheet: BabySittingTimeSheet) {
     const { startedTime, endedTime, bedTime, job } = timeSheet;
     const {
-      localMidnightTime,
+      midnightTime,
       startTimeToBedTimeRate,
       bedTimeToMidnightRate,
       midnightToEndTimeRate,
@@ -40,9 +40,9 @@ export class BabySittingChargeCalculator {
     const startedTimeToBedTimeDurationHours: number =
       (chargedBedTime.getTime() - chargedStartedTime.getTime()) / MS_IN_HOUR;
     const bedTimeToMidnightDurationHours: number =
-      (localMidnightTime.getTime() - chargedBedTime.getTime()) / MS_IN_HOUR;
+      (midnightTime.getTime() - chargedBedTime.getTime()) / MS_IN_HOUR;
     const midnightToEndTimeDurationHours: number =
-      (chargedEndTime.getTime() - localMidnightTime.getTime()) / MS_IN_HOUR;
+      (chargedEndTime.getTime() - midnightTime.getTime()) / MS_IN_HOUR;
 
     let totalCharge = 0;
     totalCharge += startedTimeToBedTimeDurationHours * startTimeToBedTimeRate;

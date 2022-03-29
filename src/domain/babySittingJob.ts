@@ -4,7 +4,7 @@ import { NamedError } from "../app/namedError";
 export class BabySittingJob {
   private _startTime: Date;
   private _endTime: Date;
-  private _localMidnightTime: Date;
+  private _midnightTime: Date;
   private _startTimeToBedTimeRate: number;
   private _bedTimeToMidnightRate: number;
   private _midnightToEndTimeRate: number;
@@ -12,7 +12,7 @@ export class BabySittingJob {
   constructor(
     startTime: Date,
     endTime: Date,
-    localMidnightTime: Date,
+    midnightTime: Date,
     startTimeToBedTimeRate: number,
     bedTimeToMidnightRate: number,
     midnightToEndTimeRate: number
@@ -29,13 +29,13 @@ export class BabySittingJob {
         Start time: ${startTime} End time: ${endTime}`
       );
     }
-    if (startTime >= localMidnightTime) {
+    if (startTime >= midnightTime) {
       throw new JobConstraintError(
         `Job cannot start after midnight. 
         Start time: ${startTime} End time: ${endTime}`
       );
     }
-    if (endTime <= localMidnightTime) {
+    if (endTime <= midnightTime) {
       throw new JobConstraintError(
         `Job cannot end before midnight. 
         Start time: ${startTime} End time: ${endTime}`
@@ -62,7 +62,7 @@ export class BabySittingJob {
 
     this._startTime = startTime;
     this._endTime = endTime;
-    this._localMidnightTime = localMidnightTime;
+    this._midnightTime = midnightTime;
     this._startTimeToBedTimeRate = startTimeToBedTimeRate;
     this._bedTimeToMidnightRate = bedTimeToMidnightRate;
     this._midnightToEndTimeRate = midnightToEndTimeRate;
@@ -76,8 +76,8 @@ export class BabySittingJob {
     return this._endTime;
   }
 
-  get localMidnightTime(): Date {
-    return this._localMidnightTime;
+  get midnightTime(): Date {
+    return this._midnightTime;
   }
 
   get startTimeToBedTimeRate(): number {
