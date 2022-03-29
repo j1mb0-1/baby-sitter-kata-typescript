@@ -11,15 +11,19 @@ import {
   getStartOfDayUTC,
   getTimezoneOffsetMs,
   MS_IN_HOUR,
+  MS_IS_MIN,
 } from "./src/helpers/timeUtilities";
 import { ChargeReporter } from "./src/app/chargeReporter";
 import { ErrorReporter } from "./src/app/errorReporter";
 
 const setDefaultConfigurationFromLocalTime = (
   startedTime: Date,
-  endedTime: Date
+  endedTime: Date,
+  timeZoneOffsetMin?: number | undefined
 ) => {
-  const timeZoneOffsetMs = getTimezoneOffsetMs();
+  const timeZoneOffsetMs = timeZoneOffsetMin
+    ? timeZoneOffsetMin * MS_IS_MIN
+    : getTimezoneOffsetMs();
   const startTimeLimitOffsetMs = 17 * MS_IN_HOUR + timeZoneOffsetMs;
   const endTimeLimitOffsetMs = 4 * MS_IN_HOUR + timeZoneOffsetMs;
   const startDay = getStartOfDayUTC(startedTime);
@@ -65,6 +69,12 @@ const runApp = () => {
         flag: "-bed-time",
         type: "Date",
       },
+      {
+        id: "timeZoneOffsetMin",
+        flag: "-time-zone-offset-min",
+        type: "number",
+        optional: true,
+      },
     ];
 
     const results: Record<string, any> = commandLineArgumentParser.parse(
@@ -75,6 +85,7 @@ const runApp = () => {
     const startedTime: Date = results["startedTime"];
     const endedTime: Date = results["endedTime"];
     const bedTime: Date = results["bedTime"];
+    const timeZoneOffsetMin: number | undefined = results["timeZoneOffsetMin"];
 
     const {
       scheduledStartTime,
@@ -82,7 +93,11 @@ const runApp = () => {
       midnightTime,
       startTimeLimitOffsetMs,
       endTimeLimitOffsetMs,
-    } = setDefaultConfigurationFromLocalTime(startedTime, endedTime);
+    } = setDefaultConfigurationFromLocalTime(
+      startedTime,
+      endedTime,
+      timeZoneOffsetMin
+    );
 
     const babySitter = new BabySitter(
       startTimeLimitOffsetMs,

@@ -73,6 +73,27 @@ describe("command line argument parser", () => {
     });
   });
 
+  it("should parse a number", () => {
+    const args: string[] = ["-number", "-10002"];
+    const argQueries: CommandLineArgumentQuery[] = [
+      {
+        id: "number",
+        flag: "-number",
+        type: "number",
+      },
+    ];
+
+    const commandLineArgumentParser = new CommandLineArgumentParser();
+    const result: Record<string, any> = commandLineArgumentParser.parse(
+      argQueries,
+      args
+    );
+
+    expect(result).toMatchObject({
+      number: -10002,
+    });
+  });
+
   it("should throw if missing", () => {
     const args: string[] = ["--started-date", "2022-03-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
@@ -88,6 +109,23 @@ describe("command line argument parser", () => {
     expect(() => {
       commandLineArgumentParser.parse(argQueries, args);
     }).toThrow(ArgumentMissingError);
+  });
+
+  it("should not throw if optional missing", () => {
+    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000Z"];
+    const argQueries: CommandLineArgumentQuery[] = [
+      {
+        id: "startedTime",
+        flag: "--started-time",
+        type: "Date",
+        optional: true,
+      },
+    ];
+
+    const commandLineArgumentParser = new CommandLineArgumentParser();
+    const actual = commandLineArgumentParser.parse(argQueries, args);
+
+    expect(actual).toMatchObject({});
   });
 
   it("should throw if cannot parse value", () => {

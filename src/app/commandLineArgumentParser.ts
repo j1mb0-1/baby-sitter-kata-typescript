@@ -21,7 +21,7 @@ export class CommandLineArgumentParser {
           break;
         }
       }
-      if (!found) {
+      if (!found && !argQuery?.optional) {
         throw new ArgumentMissingError(`Missing argument ${argQuery.flag}`);
       }
     }
@@ -36,6 +36,8 @@ export class CommandLineArgumentParser {
         throw new ArgumentParseError(`Cannot parse date from value ${value}`);
       }
       return new Date(parsed);
+    } else if (type === "number") {
+      return Number(value);
     } else {
       throw new UnsupportedTypeError(`Unsupported type ${type}`);
     }
@@ -46,6 +48,7 @@ export interface CommandLineArgumentQuery {
   id: string;
   flag: string;
   type: string;
+  optional?: boolean | undefined;
 }
 
 abstract class CommandLineArgumentParserError extends NamedError {}
