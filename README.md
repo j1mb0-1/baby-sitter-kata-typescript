@@ -27,10 +27,10 @@ For the babysitter to calculate their charge for a single night of work, the pro
   - If they finish early within an hour, they will be paid for that hour
   - If they put the kid(s) to bed within an hour, they will be paid the higher rate of $12.00 for that hour
 
-\* The program will attempt to parse dates entered by the babysitter and configure job availability and
+\* The program will attempt to parse dates entered by the babysitter and set inferred job availability and
 midnight times based on the environment it is run in. All dates should be provided with a valid ISO string format `YYYY-MM-DDTHH:mm:ss.sssZ` to ensure consistent results.
 Additionally, the optional `-time-zone-offset-min` can be provided to override the environment's
-current time zone to ensure inferred dates are in line with expectations.
+current time zone to ensure inferred times are in line with expectations.
 
 ## Getting Started
 
