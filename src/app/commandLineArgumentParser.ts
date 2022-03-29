@@ -21,7 +21,7 @@ export class CommandLineArgumentParser {
           break;
         }
       }
-      if (!found && !argQuery?.optional) {
+      if (!found && !argQuery.optional) {
         throw new ArgumentMissingError(`Missing argument ${argQuery.flag}`);
       }
     }
