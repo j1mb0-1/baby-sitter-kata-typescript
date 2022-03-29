@@ -1,6 +1,9 @@
 import {
+  ArgumentMissingError,
+  ArgumentParseError,
   CommandLineArgumentParser,
   CommandLineArgumentQuery,
+  UnsupportedTypeError,
 } from "./commandLineArgumentParser";
 
 describe("command line argument parser", () => {
@@ -84,7 +87,7 @@ describe("command line argument parser", () => {
 
     expect(() => {
       commandLineArgumentParser.parse(argQueries, args);
-    }).toThrowError();
+    }).toThrow(ArgumentMissingError);
   });
 
   it("should throw if cannot parse value", () => {
@@ -101,6 +104,40 @@ describe("command line argument parser", () => {
 
     expect(() => {
       commandLineArgumentParser.parse(argQueries, args);
-    }).toThrowError();
+    }).toThrow(ArgumentParseError);
+  });
+
+  it("should throw if argument missing", () => {
+    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000"];
+    const argQueries: CommandLineArgumentQuery[] = [
+      {
+        id: "startedTime",
+        flag: "--started-time",
+        type: "String",
+      },
+    ];
+
+    const commandLineArgumentParser = new CommandLineArgumentParser();
+
+    expect(() => {
+      commandLineArgumentParser.parse(argQueries, args);
+    }).toThrow(ArgumentMissingError);
+  });
+
+  it("should throw if query type unknown", () => {
+    const args: string[] = ["--started-time", "2022-03-28T17:00:00.000"];
+    const argQueries: CommandLineArgumentQuery[] = [
+      {
+        id: "startedTime",
+        flag: "--started-time",
+        type: "String",
+      },
+    ];
+
+    const commandLineArgumentParser = new CommandLineArgumentParser();
+
+    expect(() => {
+      commandLineArgumentParser.parse(argQueries, args);
+    }).toThrow(UnsupportedTypeError);
   });
 });
