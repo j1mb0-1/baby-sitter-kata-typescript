@@ -1,6 +1,6 @@
 # Babysitter Kata TypeScript
 
-An attempted solution of the [Babysitter Kata](https://gist.github.com/jameskbride/5482722) written in TypeScript and ran as a simple command-line app with node.js
+An attempted solution of the [Babysitter Kata](https://gist.github.com/jameskbride/5482722) written in TypeScript and ran as a simple command-line app via node.js.
 
 ## Description
 
@@ -12,23 +12,23 @@ In order for the babysitter to calculate their charge for a single night of work
   - The date and time they ended the job\*
   - The date and time they put the kid(s) to bed\*
 - The constraints:
-  - They must start the job at or after 5:00 PM in their timezone on the same day.\*
-  - They must finish the job at or before 4:00 AM in their timezone on the next day.\*
-  - They cannot finish the job before they start.
-  - They must put the kid(s) to bed between their start time and midnight in their timezone.\*
+  - They must start the job at or after 5:00 PM in their timezone on the same day\*
+  - They must finish the job at or before 4:00 AM in their timezone on the next day\*
+  - They cannot finish the job before they start
+  - They must put the kid(s) to bed between their start time and midnight in their timezone\*
 - The pay:
-  - $12.00 an hour from the entered started time to the entered bedtime.
-  - $8.00 an hour from the bedtime they entered to midnight in their current timezone.\*
-  - $16.00 an hour from midnight in their current timezone to their entered ended time.\*
-  - If they are late within an hour, they will not be paid for that hour.
-  - If they finish early within an hour, they will be paid for that hour.
+  - $12.00 an hour from the started time they entered to the bedtime they entered
+  - $8.00 an hour from the bedtime they entered to midnight in their timezone\*
+  - $16.00 an hour from midnight in their timezone to their entered ended time\*
+  - If they are late within an hour, they will not be paid for that hour
+  - If they finish early within an hour, they will be paid for that hour
   - If they put the kid(s) to bed within an hour, they will be paid the higher rate of $12.00 for that hour
 
-\* By default, the program will attempt to parse dates from the babysitter as well as infer babysitter
-availability start, availability end, and midnight times based off of the environment it is run in. To ensure consistent results,
-all dates should be provided with a valid ISO string format `YYYY-MM-DDTHH:mm:ss.sssZ`. Additionally, the optional
-`-time-zone-offset-min` can be provided to override the environment's current timezone to ensure inferred dates are in line with
-expectations.
+\* The program will attempt to parse dates entered by the babysitter as well as infer availability start, availability end,
+and midnight times based off of the environment it is run in. To ensure consistent results,
+all dates should be provided with a valid ISO string format `YYYY-MM-DDTHH:mm:ss.sssZ`.
+Additionally, the optional `-time-zone-offset-min` can be provided to override the environment's
+current timezone to ensure inferred dates are in line with expectations.
 
 ## Getting Started
 
