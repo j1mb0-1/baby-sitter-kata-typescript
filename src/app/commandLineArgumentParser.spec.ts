@@ -44,9 +44,9 @@ describe("command line argument parser", () => {
   it("should parse multiple dates", () => {
     const args: string[] = [
       "--started-time",
-      "2022-03-28T17:00:00.000",
+      "2022-03-28T17:00:00.000Z",
       "--ended-time",
-      "2022-03-28T17:00:00.000",
+      "2022-03-28T17:00:00.000Z",
     ];
     const argQueries: CommandLineArgumentQuery[] = [
       {
@@ -68,13 +68,13 @@ describe("command line argument parser", () => {
     );
 
     expect(result).toMatchObject({
-      startedTime: new Date("2022-03-28T21:00:00.000Z"),
-      endedTime: new Date("2022-03-28T21:00:00.000Z"),
+      startedTime: new Date("2022-03-28T17:00:00.000Z"),
+      endedTime: new Date("2022-03-28T17:00:00.000Z"),
     });
   });
 
   it("should throw if missing", () => {
-    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000"];
+    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
       {
         id: "startedTime",
@@ -91,7 +91,7 @@ describe("command line argument parser", () => {
   });
 
   it("should throw if cannot parse value", () => {
-    const args: string[] = ["--started-time", "2022-68-28T17:00:00.000"];
+    const args: string[] = ["--started-time", "2022-68-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
       {
         id: "startedTime",
@@ -108,7 +108,7 @@ describe("command line argument parser", () => {
   });
 
   it("should throw if argument missing", () => {
-    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000"];
+    const args: string[] = ["--started-date", "2022-03-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
       {
         id: "startedTime",
@@ -125,7 +125,7 @@ describe("command line argument parser", () => {
   });
 
   it("should throw if query type unknown", () => {
-    const args: string[] = ["--started-time", "2022-03-28T17:00:00.000"];
+    const args: string[] = ["--started-time", "2022-03-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
       {
         id: "startedTime",
