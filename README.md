@@ -13,7 +13,7 @@ For the babysitter to calculate their charge for a single night of work, the pro
   - The date and time they put the kid(s) to bed\*
   - Optionally, the timezone they work in if it differs from the one of the system the program runs on.\*
 - The constraints:
-  - They must start the job between 5:00 PM and midnight in their time zone on the same day they started\*
+  - They must start the job between 5:00 PM and midnight in their time zone\*
   - They must finish the job between midnight and 4:00 AM in their time zone the day after they started\*
   - They must put the kid(s) to bed between their started time and midnight in their time zone\*
   - They cannot finish the job before they start
@@ -73,9 +73,8 @@ node dist/index.js -started-time "2022-03-28T20:00:00.000Z" -ended-time "2022-03
 
 ## Future Considerations
 
-- A simple UI would significantly ease inputting dates and time zone.
-- Using a library to aid in date and time handling and parsing.
-- The rates and charge amount are currently represented as numbers. Consider using a library to represent it as a monetary value instead to avoid floating point issues.
+- A simple UI, or use of a date/time library would ease the input of dates and time zone information.
+- The rates and charge amount are currently represented as numbers. A libary or new class could be used to represent them as monetary values to avoid floating point issues in the future.
 
 ## Acknowledgments
 
