@@ -8,6 +8,6 @@ describe("error reporter", () => {
     const errorReporter: ErrorReporter = new ErrorReporter();
     errorReporter.report(error);
 
-    expect(console.log).toHaveBeenCalledWith(`Error: ${error}`);
+    expect(console.log).toHaveBeenCalledWith(`${error}`);
   });
 });
