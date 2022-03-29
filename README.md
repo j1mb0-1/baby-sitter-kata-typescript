@@ -11,7 +11,7 @@ For the babysitter to calculate their charge for a single night of work, the pro
   - The date and time they started the job\*
   - The date and time they ended the job\*
   - The date and time they put the kid(s) to bed\*
-  - Optionally, the timezone they work in if it differs from the one of the system the program runs on.\*
+  - Optionally, the timezone they work in if it differs from the one of the system the program runs on\*
 - The constraints:
   - They must start the job between 5:00 PM and midnight in their time zone\*
   - They must finish the job between midnight and 4:00 AM in their time zone the day after they started\*
@@ -25,7 +25,7 @@ For the babysitter to calculate their charge for a single night of work, the pro
   - If they finish early within an hour, they will be paid for that hour
   - If they put the kid(s) to bed within an hour, they will be paid the higher rate of $12.00 for that hour
 
-\* The program will attempt to parse dates entered by the babysitter and set inferred baby sitter availability and
+\* The program will attempt to parse dates entered by the babysitter and set inferred babysitter availability and
 midnight times based on the environment it is run in. All dates should be provided in a valid ISO string format `YYYY-MM-DDTHH:mm:ss.sssZ` to ensure consistent results.
 Additionally, the optional `-time-zone-offset-min` can be provided to override the environment's
 current time zone to ensure inferred times are in line with expectations.
