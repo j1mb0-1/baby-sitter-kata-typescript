@@ -18,7 +18,7 @@ describe("command line argument parser", () => {
   });
 
   it("should parse a date", () => {
-    const args: string[] = ["--started-time", "2022-03-28T17:00:00.000"];
+    const args: string[] = ["--started-time", "2022-03-28T17:00:00.000Z"];
     const argQueries: CommandLineArgumentQuery[] = [
       {
         id: "startedTime",
@@ -34,7 +34,7 @@ describe("command line argument parser", () => {
     );
 
     expect(result).toMatchObject({
-      startedTime: new Date("2022-03-28T21:00:00.000Z"),
+      startedTime: new Date("2022-03-28T17:00:00.000Z"),
     });
   });
 
